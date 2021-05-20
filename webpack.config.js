@@ -18,6 +18,9 @@ module.exports = {
     proxy: {
       '/api': {
         target: 'https://apitest.akatsuki.com.cn',
+        pathRewrite: {
+          '^/api': '',
+        },
         changeOrigin: true,
         secure: true
       }

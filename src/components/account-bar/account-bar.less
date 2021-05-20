@@ -10,15 +10,8 @@
   // border-bottom: 1px solid var(--border-color);
 
   box-shadow: var(--box-shadow);
-}
 
-a {
-  text-decoration: none;
-  color: var(--inactive-text-color);
-  transition: color ease-in-out .3s;
-
-  &:hover {
-    color: blue;
-    text-decoration: underline;
+  > *:not(:last-child) {
+    margin-right: 5px;
   }
 }

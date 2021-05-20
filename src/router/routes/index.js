@@ -2,6 +2,7 @@ import AdminPage from "pages/admin/admin";
 import ReportPage from "pages/report/report";
 import TeacherPage from "pages/teacher/teacher";
 import ContestPage from "pages/contest/contest";
+import LoginPage from "pages/login/login";
 
 export default [
   {
@@ -26,5 +27,6 @@ export default [
   },
   {
     path: '/login',
+    component: LoginPage,
   },
 ]

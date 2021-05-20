@@ -1,9 +1,10 @@
 <template>
   <div class="account-bar">
     <template v-if="!isLogin">
-      <a href="#" @click="doLogin">未登录</a>
+      <el-button type="text" @click="callLogin">未登录</el-button>
     </template>
     <template v-else>
+      <el-button type="text" @click="doLogut">注销</el-button>
       <span class="account-name">{{ username }}</span>
       <el-avatar>{{ username }}</el-avatar>
     </template>
@@ -17,7 +18,11 @@ export default {
     return {}
   },
   methods: {
-    async doLogin() {
+    callLogin() {
+      if (this.isLogin || this.$route.path.includes("/login")) return;
+      this.$router.push("/login");
+    },
+    async doLogout() {
 
     }
   },
