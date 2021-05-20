@@ -1,5 +1,21 @@
 .side-menu {
+  display: flex;
+  flex-direction: column;
+
   position: fixed;
   width: var(--sidemenu-width);
   height: 100%;
+
+  > *:not(.system-logo) {
+    height: 100%;
+  }
+}
+
+.system-logo {
+  text-align: center;
+  padding: 8px 20px 18px 20px;
+  font-size: 24px;
+  word-break: break-all;
+  color: var(--active-text-color);
+  border-right: 1px solid var(--border-color);
 }

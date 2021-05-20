@@ -1,36 +1,39 @@
 <template>
-  <el-menu default-active="1" class="side-menu"> 
-    <el-menu-item index="1" @click="goLink" data-link="/admin">
-      <i class="el-icon-user-solid"></i>
-      <span slot="title">管理员信息</span>
-    </el-menu-item>
-    <el-menu-item index="2" @click="goLink" data-link="/report">
-      <i class="el-icon-phone"></i>
-      <span slot="title">举报管理</span>
-    </el-menu-item>
-    <el-menu-item index="3" @click="goLink" data-link="/teacher">
-      <i class="el-icon-user"></i>
-      <span slot="title">教师认证</span>
-    </el-menu-item>
-    <el-menu-item index="4" @click="goLink" data-link="/contest">
-      <i class="el-icon-menu"></i>
-      <span slot="title">比赛管理</span>
-    </el-menu-item>
-    <el-submenu index="5">
-      <template slot="title">
-        <i class="el-icon-document-copy"></i>
-        <span>日志导出</span>
-      </template>
-      <el-menu-item index="5-1" @click="exportLog">
-        <i class="el-icon-document"></i>
-        <span>第一项日志</span>
+  <div class="side-menu">
+    <div class="system-logo">比赛管理系统后台</div>
+    <el-menu default-active="1"> 
+      <el-menu-item index="1" @click="goLink" data-link="/admin">
+        <i class="el-icon-user-solid"></i>
+        <span slot="title">管理员信息</span>
       </el-menu-item>
-      <el-menu-item index="5-2" @click="exportLog">
-        <i class="el-icon-document"></i>
-        <span>第二项日志</span>
+      <el-menu-item index="2" @click="goLink" data-link="/report">
+        <i class="el-icon-phone"></i>
+        <span slot="title">举报管理</span>
       </el-menu-item>
-    </el-submenu>
-  </el-menu>
+      <el-menu-item index="3" @click="goLink" data-link="/teacher">
+        <i class="el-icon-user"></i>
+        <span slot="title">教师认证</span>
+      </el-menu-item>
+      <el-menu-item index="4" @click="goLink" data-link="/contest">
+        <i class="el-icon-menu"></i>
+        <span slot="title">比赛管理</span>
+      </el-menu-item>
+      <el-submenu index="5">
+        <template slot="title">
+          <i class="el-icon-document-copy"></i>
+          <span>日志导出</span>
+        </template>
+        <el-menu-item index="5-1" @click="exportLog">
+          <i class="el-icon-document"></i>
+          <span>第一项日志</span>
+        </el-menu-item>
+        <el-menu-item index="5-2" @click="exportLog">
+          <i class="el-icon-document"></i>
+          <span>第二项日志</span>
+        </el-menu-item>
+      </el-submenu>
+    </el-menu>
+  </div>
 </template>
 
 <script>
