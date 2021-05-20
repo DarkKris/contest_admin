@@ -1,4 +1,7 @@
 import AdminPage from "pages/admin/admin";
+import ReportPage from "pages/report/report";
+import TeacherPage from "pages/teacher/teacher";
+import ContestPage from "pages/contest/contest";
 
 export default [
   {
@@ -10,18 +13,18 @@ export default [
     component: AdminPage,
   },
   {
-    path: 'report',
+    path: '/report',
+    component: ReportPage,
   },
   {
-    path: 'teacher',
+    path: '/teacher',
+    component: TeacherPage,
   },
   {
-    path: 'login',
+    path: '/contest',
+    component: ContestPage,
   },
   {
-    path: 'log',
+    path: '/login',
   },
-  {
-    path: 'contest',
-  }
 ]

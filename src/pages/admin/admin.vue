@@ -16,10 +16,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog class="add-admin-dialog"
-      :visible="dialogVisible"
-      @close="closeDialog"
-    >
+    <el-dialog class="add-admin-dialog" :visible="addVisible" @close="closeDialog">
       <template>
         <el-form label-position="right" label-width="80px" :model="createForm">
           <el-form-item label="账号名">
@@ -39,6 +36,26 @@
         <el-button type="primary" @click="doAddAdmin">确定</el-button>
       </div>
     </el-dialog>
+    <el-dialog class="edit-admin-dialog" :visible="editVisible" @close="closeDialog">
+      <template>
+        <el-form label-position="right" label-width="80px" :model="editForm">
+          <el-form-item label="账号名">
+            <el-input v-model="editForm.account"></el-input>
+          </el-form-item>
+          <el-form-item label="密码">
+            <el-input type="password" v-model="editForm.password"></el-input>
+          </el-form-item>
+          <el-form-item label="确认密码">
+            <el-input type="password" v-model="editForm.check"></el-input>
+          </el-form-item>
+        </el-form>
+      </template>
+      <span slot="title">编辑管理员</span>
+      <div slot="footer">
+        <el-button @click="closeDialog">取消</el-button>
+        <el-button type="primary" @click="doEditAdmin">确定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -47,7 +64,8 @@ export default {
   name: "admin-page",
   data() {
     return {
-      dialogVisible: false,
+      addVisible: false,
+      editVisible: false,
       tableData: [{
         account: 'Fuqian Liu',
         date: '2016-05-02',
@@ -62,20 +80,29 @@ export default {
         account: "",
         password: "",
         check: ""
+      },
+      editForm: {
+        account: "",
+        password: "",
+        check: ""
       }
     }
   },
   methods: {
     callAddAdminModal() {
-      this.dialogVisible = true;
+      this.addVisible = true;
+    },
+    callEditAdmin() {
+      this.editVisible = true;
     },
     closeDialog() {
-      this.dialogVisible = false;
+      this.addVisible = false;
+      this.editVisible = false;
     },
     async doAddAdmin() {
 
     },
-    callEditAdmin() {
+    async doEditAdmin() {
 
     },
     async deleteAdmin() {
