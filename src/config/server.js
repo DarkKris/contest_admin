@@ -1,1 +1,1 @@
-export const baseURL = '/api'; // TODO change to '/' when product release
+export const baseURL = '/api'; // TODO change to '' when product release

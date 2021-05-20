@@ -23,13 +23,13 @@
           <i class="el-icon-document-copy"></i>
           <span>日志导出</span>
         </template>
-        <el-menu-item index="" @click.stop.native="exportLog('one')">
+        <el-menu-item index="" @click.stop.native="exportLog('server')">
           <i class="el-icon-document"></i>
-          <span>第一项日志</span>
+          <span>服务器日志</span>
         </el-menu-item>
-        <el-menu-item index="" @click="exportLog('two')">
+        <el-menu-item index="" @click="exportLog('error')">
           <i class="el-icon-document"></i>
-          <span>第二项日志</span>
+          <span>错误日志</span>
         </el-menu-item>
       </el-submenu>
     </el-menu>
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+import { getServerLog, getErrorLog } from "api/log";
 export default {
   name: "side-menu",
   data() {
@@ -52,10 +53,39 @@ export default {
     },
     exportLog(type) {
       console.log("🚀 exportLog %s", type);
+      switch (type) {
+        case "server":
+          this.getLog();
+          break;
+        case "erorr":
+          this.getErrors();
+          break;
+        default:
+      }
+    },
+    async getLog() {
+      const token = this.$store.state.userInfo.token;
+      const resp = await getServerLog(token);
+
+      if (!resp.success) {
+        this.$message({
+          type: 'error',
+          message: "获取服务器日志失败，" + resp.err_msg
+        });
+      }
+    },
+    async getErrors() {
+      const token = this.$store.state.userInfo.token;
+      const resp = await getErrorLog(token);
+
+      if (!resp.success) {
+        this.$message({
+          type: 'error',
+          message: "获取错误日志失败，" + resp.err_msg
+        });
+      } 
     }
   },
-  computed: {
-  }
 }
 </script>
 
