@@ -1,10 +1,10 @@
 <template>
   <div id="__root">
     <side-menu></side-menu>
-    <div>
+    <div id="__right-content">
       <account-bar/>
       <keep-alive>
-        <router-view/>
+        <router-view id="__content-box"/>
       </keep-alive>
     </div>
   </div>
@@ -25,6 +25,6 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
 @import "./App.less";
 </style>

@@ -6,21 +6,20 @@ const router = new VueRouter({
   routes: routes
 });
 
-router.beforeEach((to, from, next) => {
-  return;
-  if (!to.meta.visitor) { // 游客不能访问
-    // 检查登录状态
-    if (localStorage.getItem('isLogin') !== "true") {
-      next({
-        path: '/login',
-        redirect: true,
-      });
-    } else {
-      next();
-    }
-  } else {
-    next();
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   if (!to.meta.visitor) { // 游客不能访问
+//     // 检查登录状态
+//     if (localStorage.getItem('isLogin') !== "true") {
+//       next({
+//         path: '/login',
+//         redirect: true,
+//       });
+//     } else {
+//       next();
+//     }
+//   } else {
+//     next();
+//   }
+// });
 
 export default router;

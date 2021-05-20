@@ -1,7 +1,28 @@
 :root {
   --bg-color: white;
+  --border-color: #e6e6e6;
+
+  --sidemenu-width: 200px;
+  --topbar-height: 70px;
+  --content-box-height: calc(100% - 70px);
 }
 
 #__root {
   background-color: var(--bg-color);
+  width: 100%;
+  height: 100%;
+}
+
+#__right-content {
+  width: 100%;
+  height: 100%;
+  padding-left: var(--sidemenu-width);
+
+  overflow: hidden;
+}
+
+#__content-box {
+  width: 100%;
+  height: var(--content-box-height);
+  overflow-y: auto;
 }
