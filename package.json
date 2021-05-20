@@ -1,0 +1,38 @@
+{
+  "name": "contest-admin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack serve",
+    "watch": "webpack --watch",
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "css": "^3.0.0",
+    "element-ui": "^2.15.1",
+    "vue": "^2.6.12",
+    "vue-router": "^3.5.1",
+    "vuex": "^3.6.2",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^8.1.1",
+    "css-loader": "^5.2.4",
+    "html-loader": "^2.1.2",
+    "less": "^4.1.1",
+    "less-loader": "^9.0.0",
+    "postcss": "^8.2.15",
+    "postcss-loader": "^5.3.0",
+    "source-map-loader": "^2.0.2",
+    "style-loader": "^2.0.0",
+    "url-loader": "^4.1.1",
+    "vue-loader": "^15.9.7",
+    "vue-template-compiler": "^2.6.12",
+    "webpack": "^5.37.1",
+    "webpack-cli": "^4.7.0"
+  }
+}
