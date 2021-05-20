@@ -15,7 +15,18 @@ export default async function (url, method = "GET", data = {}, headers = {}) {
     mode: "cors",
   };
 
-  if (method === "POST" || method === "PUT") {
+  if (method === "GET") {
+    let firstFlag = true;
+    Object.keys(data).forEach((key) => {
+      if (firstFlag) {
+        url += "?";
+        firstFlag = false;
+      } else {
+        url += "&";
+      }
+      url += `${key}=${data[key]}`;
+    });
+  } else {
     // 仅POST请求附带数据
     if (data instanceof FormData) {
       delete requestConfig.headers["Content-Type"];
@@ -27,17 +38,6 @@ export default async function (url, method = "GET", data = {}, headers = {}) {
         value: JSON.stringify(data),
       });
     }
-  } else if (method === "GET") {
-    let firstFlag = true;
-    Object.keys(data).forEach((key) => {
-      if (firstFlag) {
-        url += "?";
-        firstFlag = false;
-      } else {
-        url += "&";
-      }
-      url += `${key}=${data[key]}`;
-    });
   }
 
   const timeoutFunc = () => {

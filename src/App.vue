@@ -19,6 +19,9 @@ export default {
   data() {
     return {}
   },
+  created() {
+    this.$store.dispatch("initUserInfo");
+  },
   methods: {
 
   }

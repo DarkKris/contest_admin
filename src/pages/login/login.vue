@@ -54,7 +54,6 @@
 <script>
 import { adminLogin, sendCaptcha } from "api/login";
 
-const LOGIN_KEY = "ContestAdmin-isLogin";
 
 export default {
   name: "login-page",
@@ -83,7 +82,7 @@ export default {
 
       if (resp.success) {
         const data = resp.data;
-        this.loginForm = data.token;
+        this.loginForm.token = data.token;
         this.$message({
           type: "success",
           message: "已发送验证码，请前往邮箱接收",
@@ -120,11 +119,9 @@ export default {
               ...data.admin,
               token: data.token
             });
-            localStorage.setItem(LOGIN_KEY, true);
             this.$router.push("/admin");
           } else {
             this.$store.dispatch("changeLoginStatus", false);
-            localStorage.removeItem(LOGIN_KEY);
             console.error("🙅 登录失败 err_msg: %s", resp.err_msg);
             this.$message({
               type: "error",

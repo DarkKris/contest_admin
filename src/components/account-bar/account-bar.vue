@@ -22,8 +22,8 @@ export default {
       if (this.isLogin || this.$route.path.includes("/login")) return;
       this.$router.push("/login");
     },
-    async doLogout() {
-
+    doLogout() {
+      this.$store.dispatch("changeLoginStatus", false);
     }
   },
   computed: {
