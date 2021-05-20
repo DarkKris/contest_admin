@@ -17,12 +17,31 @@
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="330">
         <template slot-scope="scope">
-          <el-button size="mini" @click="goLink(scope.row.link)">查看详情</el-button>
+          <el-button size="mini" @click="doGetReport(scope.row.id)">查看详情</el-button>
           <el-button type="danger" @click="deleteArticle" size="mini">删除举报文章</el-button>
           <el-button type="primary" @click="confirmReport(scope.row.id, scope.row)" size="mini">确认已处理</el-button>
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog :visible="detailVisible" class="dialog" @close="detailVisible = false" title="举报详情">
+      <el-form v-loading="detailLoading" :model="detail" label-align="left">
+        <el-form-item label="ID">
+          <el-input v-model="detail.id" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="文章ID">
+          <el-input v-model="detail.article_id" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="举报原因">
+          <el-input v-model="detail.reason" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="创建时间">
+          <el-input v-model="detail.create_time" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="附件" v-if="detail.has_attachment">
+          <el-button @click="doGetReportFile(detail.article_id)">下载附件</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
     <div class="page-bottom">
       <el-pagination layout="prev, pager, next"
         :total="countTotal"
@@ -34,11 +53,20 @@
 </template>
 
 <script>
-import { getAllReports, setReportComplete } from "api/report";
+import {
+  getAllReports,
+  setReportComplete,
+  getReport,
+  getReportFile,
+} from "api/report";
+
 export default {
   name: "report-page",
   data() {
     return {
+      detailVisible: false,
+      detailLoading: false,
+      detail: {},
       tableData: [{
         id: "",
         reporter_uid: "",
@@ -74,6 +102,34 @@ export default {
         this.$message({
           type: "error",
           message: "获取举报列表失败，" + resp.err_msg
+        });
+      }
+    },
+    async doGetReport(id) {
+      // if (this.detailLoading || !id) return;
+      this.detailLoading = true;
+      this.detailVisible = true;
+
+      const token = this.$store.state.userInfo.token;
+      const resp = await getReport(id, token);
+
+      if (resp.success) {
+        this.detail = resp.data;
+      } else {
+        this.$message({
+          type: "error",
+          message: "获取举报信息失败，" + resp.err_msg
+        });
+      }
+      this.detailLoading = false;
+    },
+    async doGetReportFile(id) {
+      const token = this.$store.state.userInfo.token;
+      const resp = await getReportFile(id, token);
+      if (!resp.success) {
+        this.$message({
+          type: "error",
+          message: "获取举报附件失败，" + resp.err_msg
         });
       }
     },
