@@ -4,7 +4,7 @@
       <el-button type="text" @click="callLogin">未登录</el-button>
     </template>
     <template v-else>
-      <el-button type="text" @click="doLogut">注销</el-button>
+      <el-button type="text" @click="doLogout">注销</el-button>
       <el-button type="text" @click="callEdit">更新信息</el-button>
       <span class="account-name">{{ username }}</span>
       <el-avatar>{{ username }}</el-avatar>

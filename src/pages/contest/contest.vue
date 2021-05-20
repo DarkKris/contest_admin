@@ -1,59 +1,74 @@
 <template>
   <div class="contest-page">
     <div class="page-top">
-      <h2 class="page-title">比赛管理</h2>
+      <h2 class="page-title">文件/比赛管理</h2>
       <div class="operate-btns">
-        <el-button type="primary" @click="callAddContest">添加比赛</el-button>
+        <el-button type="primary" @click="callAddContest">添加比赛/文件类型</el-button>
       </div>
     </div>
     <el-table class="contest-table" :data="tableData" border>
-      <el-table-column prop="date" label="创建时间" width="160"/>
-      <el-table-column prop="name" label="比赛名称" width="300"/>
-      <el-table-column prop="files" label="比赛文件"/>
+      <el-table-column label="比赛/文件" width="160">
+        <template slot-scope="scope">
+          {{ scope.is_file_type ? "文件" : "比赛" }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="type" label="类型"/>
       <el-table-column fixed="right" label="操作" width="77">
         <template slot-scope="scope">
-          <el-button type="danger" @click="deleteContest" size="mini">删除</el-button>
+          <el-button type="danger" @click="deleteType(scope.row.type_id)" size="mini">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
+    <div class="page-bottom">
+      <el-pagination layout="prev, pager, next"
+        :total="countTotal"
+        :page-size="10"
+        @current-change="pageChange"
+      />
+    </div>
     <el-dialog :visible="dialogVisible" @close="closeDialog">
       <template>
         <el-form label-position="right" label-width="80px" :model="createForm">
-          <el-form-item label="账号名">
-            <el-input v-model="createForm.account"></el-input>
+          <el-form-item label="创建类型">
+            <el-radio-group v-model="createForm.is_file_type">
+              <el-radio :label="true">文件类型</el-radio>
+              <el-radio :label="false">比赛类型</el-radio>
+            </el-radio-group>
           </el-form-item>
-          <el-form-item label="密码">
-            <el-input type="password" v-model="createForm.password"></el-input>
-          </el-form-item>
-          <el-form-item label="确认密码">
-            <el-input type="password" v-model="createForm.check"></el-input>
+          <el-form-item label="类型">
+            <el-input v-model="createForm.type"></el-input>
           </el-form-item>
         </el-form>
       </template>
-      <span slot="title">添加比赛</span>
+      <span slot="title">添加类型</span>
       <div slot="footer">
         <el-button @click="closeDialog">取消</el-button>
-        <el-button type="primary" @click="doCreateContest">确定</el-button>
+        <el-button type="primary" @click="doCreateType">确定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
+import { getContestList, addContestType, deleteContestType } from "api/contest";
 export default {
   name: "contest-page",
   data() {
     return {
       dialogVisible: false,
       tableData: [{
-        date: "2021-05-12 16:42:05",
-        name: "2021年第二届武汉理工大学ACM-ICPC校赛",
-        files: "http://deanti.wang/Article?id=21"
+        is_file_type: true,
+        type: "doc",
       }],
+      countTotal: 0,
       createForm: {
-
+        is_file_type: true,
+        type: "",
       }
     }
+  },
+  created() {
+    this.getTypeList();
   },
   methods: {
     callAddContest() {
@@ -62,20 +77,70 @@ export default {
     closeDialog() {
       this.dialogVisible = false;
     },
-    async doCreateContest() {
-      
+    pageChange(page) {
+      this.getTypeList(page);
     },
-    async deleteContest() {
-      this.$confirm('确认删除该比赛吗？', '提示', {
+    async getTypeList(page = 1) {
+      const token = this.$store.state.userInfo.token;
+      const resp = await getContestList(page, token);
+
+      if (resp.success) {
+        const data = resp.data;
+        this.tableData = [...data.file_types];
+        this.countTotal = data.total_count;
+      } else {
+        this.$message({
+          type: 'error',
+          message: "获取类型列表失败，" + resp.err_msg
+        });
+      }
+    },
+    async doCreateType() {
+      const token = this.$store.state.userInfo.token;
+      const reqData = {
+        is_file_type: this.createForm.is_file_type == true,
+        type: this.createForm.type,
+      };
+      const resp = await addContestType(reqData, token);
+
+      if (resp.success) {
+        this.tableData = [resp.data, ...this.tableData].slice(0, 10);
+        this.$message({
+          type: "succes",
+          message: "添加类型成功"
+        });
+      } else {
+        this.$message({
+          type: "succes",
+          message: "添加类型失败，" + resp.err_msg
+        });
+      }
+    },
+    deleteType(typeID) {
+      const token = this.$store.state.userInfo.token;
+      this.$confirm('确认删除该类型吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        // TODO api
-        this.$message({
-          type: 'success',
-          message: '删除比赛成功!'
-        });
+      }).then(async () => {
+        const resp = await deleteContestType({
+          type_id: typeID,
+          is_file_type: this.tableData.find(val => val.type_id === typeID).is_file_type
+        }, token);
+
+        if (resp.success) {
+          this.tableData = [...this.tableData.filter(val => val.type_id !== typeID)];
+          this.$message({
+            type: 'success',
+            message: '删除类型成功!'
+          });
+        } else {
+          this.$message({
+            type: 'error',
+            message: '删除类型失败，' + resp.err_msg
+          });
+        }
+        
       }).catch(() => {
         this.$message({
           type: 'info',

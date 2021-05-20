@@ -16,7 +16,7 @@
       </el-menu-item>
       <el-menu-item index="/contest">
         <i class="el-icon-menu"></i>
-        <span slot="title">比赛管理</span>
+        <span slot="title">文件比赛管理</span>
       </el-menu-item>
       <el-submenu index="5">
         <template slot="title">
