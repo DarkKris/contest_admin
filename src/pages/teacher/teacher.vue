@@ -11,17 +11,27 @@
           <el-link :href="scope.row.file">{{ scope.row.file }}</el-link>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="148">
+      <el-table-column fixed="right" label="操作" width="245">
         <template slot-scope="scope">
-          <el-button type="danger" @click="rejectTeacher" size="mini">拒绝</el-button>
-          <el-button type="primary" @click="confirmTeacher" size="mini">通过</el-button>
+          <el-button size=mini @click="getFiles(scope.row.uid)">获取附件</el-button>
+          <el-button type="danger" @click="rejectTeacher(scope.row.uid)" size="mini">拒绝</el-button>
+          <el-button type="primary" @click="confirmTeacher(scope.row.uid)" size="mini">通过</el-button>
         </template>
       </el-table-column>
     </el-table>
+    <div class="page-bottom">
+      <el-pagination layout="prev, pager, next"
+        :total="countTotal"
+        :page-size="10"
+        @current-change="pageChange"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+import { getAllTeacher, getTeacherFile, hanldeTeacherApply } from "api/teacher";
+
 export default {
   name: "teacher-page",
   data() {
@@ -30,21 +40,67 @@ export default {
         date: "2021-05-12 16:42:05",
         account: "Yihong Wang",
         file: "http://deanti.wang/Article?id=21"
-      }]
+      }],
+      countTotal: 0,
     }
   },
+  created() {
+    this.getTeacherList();
+  },
   methods: {
-    async rejectTeacher() {
+    pageChange(page) {
+      this.getTeacherList(page);
+    },
+    async getTeacherList(page = 1) {
+      const token = this.$store.state.userInfo.token;
+      const resp = await getAllTeacher(page, token);
+
+      if (resp.success) {
+        const data = resp.data;
+        this.tableData = [...data.applications];
+        this.countTotal = data.total_count;
+      } else {
+        this.$message({
+          type: "error",
+          message: "获取申请列表失败，" + resp.err_msg
+        });
+      }
+    },
+    async getFiles(uid) {
+      const token = this.$store.state.userInfo.token;
+      const resp = await getTeacherFile(uid, token);
+
+      if (!resp.success) {
+        this.$message({
+          type: "error",
+          message: "获取附件失败，" + resp.err_msg
+        });
+      }
+    },
+    async handleApply(uid, isAgree) {
+      const token = this.$store.state.userInfo.token;
+      const resp = await hanldeTeacherApply(uid, isAgree, token);
+
+      if (resp.success) {
+        this.tableData = [...this.tableData.filter(val => val.uid !== uid)];
+        this.$message({
+          type: 'success',
+          message: `${isAgree ? '通过' : '拒绝'}申请成功!`
+        });
+      } else {
+        this.$message({
+          type: 'success',
+          message: `${isAgree ? '通过' : '拒绝'}申请失败，${resp.err_msg}}`
+        });
+      }
+    },
+    rejectTeacher(id) {
       this.$confirm('确认拒绝该申请吗?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        // TODO api
-        this.$message({
-          type: 'success',
-          message: '拒绝成功!'
-        });
+        this.handleApply(id, false);
       }).catch(() => {
         this.$message({
           type: 'info',
@@ -52,17 +108,13 @@ export default {
         });          
       });
     },
-    async confirmTeacher() {
+    confirmTeacher(id) {
       this.$confirm('确认通过该申请吗？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        // TODO api
-        this.$message({
-          type: 'success',
-          message: '通过申请成功!'
-        });
+        this.handleApply(id, true);
       }).catch(() => {
         this.$message({
           type: 'info',
