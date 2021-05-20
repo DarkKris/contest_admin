@@ -1,20 +1,20 @@
 <template>
   <div class="side-menu">
     <div class="system-logo">比赛管理系统后台</div>
-    <el-menu default-active="1"> 
-      <el-menu-item index="1" @click="goLink" data-link="/admin">
+    <el-menu :default-active="$route.path" router>
+      <el-menu-item index="/admin">
         <i class="el-icon-user-solid"></i>
         <span slot="title">管理员信息</span>
       </el-menu-item>
-      <el-menu-item index="2" @click="goLink" data-link="/report">
+      <el-menu-item index="/report">
         <i class="el-icon-phone"></i>
         <span slot="title">举报管理</span>
       </el-menu-item>
-      <el-menu-item index="3" @click="goLink" data-link="/teacher">
+      <el-menu-item index="/teacher">
         <i class="el-icon-user"></i>
         <span slot="title">教师认证</span>
       </el-menu-item>
-      <el-menu-item index="4" @click="goLink" data-link="/contest">
+      <el-menu-item index="/contest">
         <i class="el-icon-menu"></i>
         <span slot="title">比赛管理</span>
       </el-menu-item>
@@ -23,11 +23,11 @@
           <i class="el-icon-document-copy"></i>
           <span>日志导出</span>
         </template>
-        <el-menu-item index="5-1" @click="exportLog">
+        <el-menu-item index="" @click.stop.native="exportLog('one')">
           <i class="el-icon-document"></i>
           <span>第一项日志</span>
         </el-menu-item>
-        <el-menu-item index="5-2" @click="exportLog">
+        <el-menu-item index="" @click="exportLog('two')">
           <i class="el-icon-document"></i>
           <span>第二项日志</span>
         </el-menu-item>
@@ -50,8 +50,8 @@ export default {
         this.$router.push(link);
       }
     },
-    exportLog(vnode) {
-      console.log("🚀 exportLog", vnode.$el);
+    exportLog(type) {
+      console.log("🚀 exportLog %s", type);
     }
   },
   computed: {
