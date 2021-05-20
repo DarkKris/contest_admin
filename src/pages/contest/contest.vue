@@ -16,6 +16,26 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog :visible="dialogVisible" @close="closeDialog">
+      <template>
+        <el-form label-position="right" label-width="80px" :model="createForm">
+          <el-form-item label="账号名">
+            <el-input v-model="createForm.account"></el-input>
+          </el-form-item>
+          <el-form-item label="密码">
+            <el-input type="password" v-model="createForm.password"></el-input>
+          </el-form-item>
+          <el-form-item label="确认密码">
+            <el-input type="password" v-model="createForm.check"></el-input>
+          </el-form-item>
+        </el-form>
+      </template>
+      <span slot="title">添加比赛</span>
+      <div slot="footer">
+        <el-button @click="closeDialog">取消</el-button>
+        <el-button type="primary" @click="doCreateContest">确定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -24,16 +44,26 @@ export default {
   name: "contest-page",
   data() {
     return {
+      dialogVisible: false,
       tableData: [{
         date: "2021-05-12 16:42:05",
         name: "2021年第二届武汉理工大学ACM-ICPC校赛",
         files: "http://deanti.wang/Article?id=21"
-      }]
+      }],
+      createForm: {
+
+      }
     }
   },
   methods: {
     callAddContest() {
-
+      this.dialogVisible = true;
+    },
+    closeDialog() {
+      this.dialogVisible = false;
+    },
+    async doCreateContest() {
+      
     },
     async deleteContest() {
       this.$confirm('确认删除该比赛吗？', '提示', {
