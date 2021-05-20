@@ -9,9 +9,9 @@
     <el-table class="admin-table" :data="tableData" border>
       <el-table-column prop="account" label="账号名"/>
       <el-table-column prop="date" label="创建时间"/>
-      <el-table-column fixed="right" label="操作" width="148">
+      <el-table-column fixed="right" label="操作" width="77"><!-- 148 -->
         <template slot-scope="scope">
-          <el-button @click="callEditAdmin(scope.row.id)" size="mini">编辑</el-button>
+          <!-- <el-button @click="callEditAdmin(scope.row.id)" size="mini">编辑</el-button> -->
           <el-button @click="callDeleteAdmin(scope.row.id)" type="danger" size="mini">删除</el-button>
         </template>
       </el-table-column>
