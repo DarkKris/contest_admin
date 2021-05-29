@@ -72,6 +72,9 @@ export default {
           type: 'error',
           message: "获取服务器日志失败，" + resp.err_msg
         });
+      } else {
+        const data = resp.data;
+        this.downloadFile(data, "服务器日志.log");
       }
     },
     async getErrors() {
@@ -83,7 +86,19 @@ export default {
           type: 'error',
           message: "获取错误日志失败，" + resp.err_msg
         });
-      } 
+      } else {
+        const data = resp.data;
+        this.downloadFile(data, "服务器错误日志.log");
+      }
+    },
+    downloadFile(data, filename) {
+      let a = document.createElement('a');
+      let url = window.URL.createObjectURL(data);
+      const filename = 'myfile.zip';
+      a.href = url;
+      a.download = filename;
+      a.click();
+      window.URL.revokeObjectURL(url);
     }
   },
 }

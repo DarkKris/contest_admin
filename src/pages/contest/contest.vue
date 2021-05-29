@@ -100,7 +100,7 @@ export default {
 
       if (resp.success) {
         const data = resp.data;
-        this.tableData = [...data.file_types];
+        this.tableData = [...data.match_types];
         this.countTotal = data.total_count;
       } else {
         this.$message({
@@ -115,7 +115,7 @@ export default {
 
       if (resp.success) {
         const data = resp.data;
-        this.tableData = [...data.file_types];
+        this.tableData = [...data.match_types];
         this.countTotal = data.total_count;
       } else {
         this.$message({
