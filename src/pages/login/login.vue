@@ -22,6 +22,7 @@
         <el-form-item
           v-if="loginType === 'password'"
           label="登录密码"
+          type="password"
           prop="password"
           :rules="[{
             required: true, message: '密码不能为空', trigger: 'blur'

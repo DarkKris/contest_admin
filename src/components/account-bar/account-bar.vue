@@ -1,6 +1,6 @@
 <template>
   <div class="account-bar">
-    <template v-if="isLogin">
+    <template v-if="!isLogin">
       <el-button type="text" @click="callLogin">未登录</el-button>
     </template>
     <template v-else>
