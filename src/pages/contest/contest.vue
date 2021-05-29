@@ -13,10 +13,14 @@
     <el-table class="contest-table" :data="tableData" border>
       <el-table-column label="比赛/文件" width="160">
         <template slot-scope="scope">
-          {{ scope.row.is_file_type ? "文件" : "比赛" }}
+          {{ typeRadio }}
         </template>
       </el-table-column>
-      <el-table-column prop="type" label="类型"/>
+      <el-table-column prop="type" label="类型">
+        <template slot-scope="scope">
+          {{ scope.row }}
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" label="操作" width="77">
         <template slot-scope="scope">
           <el-button type="danger" @click="deleteType(scope.row.type_id)" size="mini">删除</el-button>
