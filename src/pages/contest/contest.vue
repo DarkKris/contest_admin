@@ -3,13 +3,17 @@
     <div class="page-top">
       <h2 class="page-title">文件/比赛管理</h2>
       <div class="operate-btns">
+        <el-radio-group v-model="typeRadio">
+          <el-radio-button label="文件"></el-radio-button>
+          <el-radio-button label="比赛"></el-radio-button>
+      </el-radio-group>
         <el-button type="primary" @click="callAddContest">添加比赛/文件类型</el-button>
       </div>
     </div>
     <el-table class="contest-table" :data="tableData" border>
       <el-table-column label="比赛/文件" width="160">
         <template slot-scope="scope">
-          {{ scope.is_file_type ? "文件" : "比赛" }}
+          {{ scope.row.is_file_type ? "文件" : "比赛" }}
         </template>
       </el-table-column>
       <el-table-column prop="type" label="类型"/>
@@ -55,6 +59,7 @@ export default {
   name: "contest-page",
   data() {
     return {
+      typeRadio: "文件",
       dialogVisible: false,
       tableData: [{
         is_file_type: true,
@@ -64,7 +69,8 @@ export default {
       createForm: {
         is_file_type: true,
         type: "",
-      }
+      },
+      nowPage: 1,
     }
   },
   created() {
@@ -78,11 +84,34 @@ export default {
       this.dialogVisible = false;
     },
     pageChange(page) {
-      this.getTypeList(page);
+      this.nowPage = page;
+      switch (this.typeRadio) {
+        case "文件":
+          this.getTypeList(page);
+          break;
+        case "比赛":
+          this.doGetContestList(page);
+          break;
+      }
     },
     async getTypeList(page = 1) {
       const token = this.$store.state.userInfo.token;
       const resp = await getContestList(page, token);
+
+      if (resp.success) {
+        const data = resp.data;
+        this.tableData = [...data.file_types];
+        this.countTotal = data.total_count;
+      } else {
+        this.$message({
+          type: 'error',
+          message: "获取类型列表失败，" + resp.err_msg
+        });
+      }
+    },
+    async doGetContestList(page = 1) {
+      const token = this.$store.state.userInfo.token;
+      const resp = await getContestTypeList(page, token);
 
       if (resp.success) {
         const data = resp.data;
@@ -147,6 +176,18 @@ export default {
           message: '已取消删除'
         });          
       });
+    }
+  },
+  watch: {
+    typeRadio(type) {
+      switch (type) {
+        case "文件": 
+          this.getTypeList(this.nowPage);
+          break;
+        case "比赛":
+          this.doGetContestList(this.nowPage);
+          break;
+      }
     }
   }
 }

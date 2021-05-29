@@ -7,8 +7,8 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  // next();
-  // return;
+  next();
+  return;
   // TODO upon is debug codes, please remove when product release
   if (to.path !== "/login") {
     // 检查登录状态

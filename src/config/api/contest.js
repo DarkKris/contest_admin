@@ -6,3 +6,5 @@ export const addContestType = (data, Token) => fetch(baseURL + "/admin/type/add"
 export const deleteContestType = (data, Token) => fetch(baseURL + "/admin/type/delete", "DELETE", data, { Token });
 
 export const getContestList = (page = 1, Token) => fetch(baseURL + "/admin/type/file?page=" + page, "GET", {}, { Token });
+
+export const getContestTypeList = (page = 1, Token) => fetch(baseURL + "/public/match-type?page=" + page, "GET", {}, { Token });
