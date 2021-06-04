@@ -126,12 +126,8 @@ export default {
     async doGetReportFile(id) {
       const token = this.$store.state.userInfo.token;
       const resp = await getReportFile(id, token);
-      if (!resp.success) {
-        this.$message({
-          type: "error",
-          message: "获取举报附件失败，" + resp.err_msg
-        });
-      }
+
+      this.downloadFile(await resp.blob, resp.filename);
     },
     deleteArticle() {
       this.$confirm('此操作将永久删除该举报文章, 是否继续?', '提示', {
@@ -177,7 +173,15 @@ export default {
           message: '已取消确认'
         });          
       });
-    }
+    },
+    downloadFile(data, filename) {
+      let a = document.createElement('a');
+      let url = window.URL.createObjectURL(data);
+      a.href = url;
+      a.download = filename;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    },
   }
 }
 </script>

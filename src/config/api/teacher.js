@@ -3,7 +3,7 @@ import { baseURL } from "../server";
 
 export const getAllTeacher = (page, Token) => fetch(baseURL + "/admin/application/all?page=" + page, "GET", {}, { Token });
 
-export const getTeacherFile = (uid, Token) => fetch(baseURL + "/admin/application/attachment?file-uid=" + uid, "GET", {}, { Token });
+export const getTeacherFile = (uid, Token) => fetch(baseURL + "/admin/application/attachment?file-uid=" + uid, "GET", {}, { Token }, true);
 
 export const hanldeTeacherApply = (uid, agree, Token) => fetch(
   baseURL + "/admin/application/handle",
