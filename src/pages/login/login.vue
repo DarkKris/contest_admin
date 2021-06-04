@@ -120,7 +120,7 @@ export default {
               ...data.admin,
               token: data.token
             });
-            this.$router.push("/admin");
+            this.$router.push("/");
           } else {
             this.$store.dispatch("changeLoginStatus", false);
             console.error("🙅 登录失败 err_msg: %s", resp.err_msg);
