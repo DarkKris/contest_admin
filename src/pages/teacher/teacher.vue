@@ -70,12 +70,15 @@ export default {
       const token = this.$store.state.userInfo.token;
       const resp = await getTeacherFile(uid, token);
 
-      if (!resp.success) {
-        this.$message({
-          type: "error",
-          message: "获取附件失败，" + resp.err_msg
-        });
-      }
+      this.downloadFile(await resp.blob, resp.filename);
+    },
+    downloadFile(data, filename) {
+      let a = document.createElement('a');
+      let url = window.URL.createObjectURL(data);
+      a.href = url;
+      a.download = filename;
+      a.click();
+      window.URL.revokeObjectURL(url);
     },
     async handleApply(uid, isAgree) {
       const token = this.$store.state.userInfo.token;

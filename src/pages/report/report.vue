@@ -37,8 +37,9 @@
         <el-form-item label="创建时间">
           <el-input v-model="detail.create_time" disabled></el-input>
         </el-form-item>
-        <el-form-item label="附件" v-if="detail.has_attachment">
-          <el-button @click="doGetReportFile(detail.article_id)">下载附件</el-button>
+        <el-form-item label="附件">
+          <span v-if="!detail.has_attachment">无附件</span>
+          <el-button v-else @click="doGetReportFile(detail.article_id)">下载附件</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
